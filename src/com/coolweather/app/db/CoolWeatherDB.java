@@ -17,7 +17,7 @@ public class CoolWeatherDB {
 	/**
 	 * 数据库名
 	 * */
-	public static final String DB_NAME = "cool_weather";
+	public static final String DB_NAME = "cool_weather.db";
 	
 	/**
 	 * 数据库版本
@@ -108,7 +108,7 @@ public class CoolWeatherDB {
 	public List<City> loadCitys(int provinceId){
 		
 		List<City> list = new ArrayList<City>();
-		Cursor cursor = db.query("City",null,"province_id",new String[]{String.valueOf(provinceId)},null,null,null);
+		Cursor cursor = db.query("City",null,"province_id=?",new String[]{String.valueOf(provinceId)},null,null,null);
 		if(cursor.moveToFirst()){
 			do {
 				
@@ -137,17 +137,17 @@ public class CoolWeatherDB {
 			values.put("county_name",county.getCountyName());
 			values.put("county_code",county.getCountyCode());
 			values.put("city_id",county.getCityId());
-			db.insert("City",null,values);
+			db.insert("County",null,values);
 		}
 	}
 	
 	/**
 	 * 从数据库读取全国所有的 县信息
 	 * */
-	public List<County> loadCountys(int cityId){
+	public List<County> loadCounties(int cityId){
 		
 		List<County> list = new ArrayList<County>();
-		Cursor cursor = db.query("County",null,"city_id",new String[]{String.valueOf(cityId)},null,null,null);
+		Cursor cursor = db.query("County",null,"city_id=?",new String[]{String.valueOf(cityId)},null,null,null);
 		if(cursor.moveToFirst()){
 			do {
 				

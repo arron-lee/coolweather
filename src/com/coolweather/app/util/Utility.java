@@ -71,6 +71,7 @@ public class Utility {
 					//将解析出来的数据存储到County表
 					coolWeatherDB.saveCounty(county);
 				}
+				return true;
 			}
 		}
 		

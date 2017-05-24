@@ -8,12 +8,9 @@ import java.net.URL;
 
 public class HttpUtil {
 
-	
 	public static void sendHttpRequest(final String address,
 			final HttpCallbackListener listener) {
-		
 		new Thread(new Runnable(){
-
 			@Override
 			public void run() {
 				HttpURLConnection connection = null;
@@ -25,14 +22,13 @@ public class HttpUtil {
 					connection.setReadTimeout(8000);
 					InputStream in = connection.getInputStream();
 					BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-					
 					StringBuilder response= new StringBuilder();
 					String line;
 					while( (line = reader.readLine()) != null ){
 						response.append(line);
+					}
 					//回调onFinish方法
-						}
-				if(listener!=null){
+					if(listener!=null){
 						listener.onFinish(response.toString());
 					}
 				}catch(Exception e){
