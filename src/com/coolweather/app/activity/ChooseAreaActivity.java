@@ -81,12 +81,19 @@ public class ChooseAreaActivity extends Activity {
 	private int currentLevel;
 	
 	
+	/**
+	 * 是否从WeahterActivity中跳转过来
+	 * */
+	private boolean isFormWeatherActivity;
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		
+		isFormWeatherActivity = getIntent().getBooleanExtra("from_weather_activity", false);
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-		if (preferences.getBoolean("city_selected", false)) {
+		if (preferences.getBoolean("city_selected", false)&& !isFormWeatherActivity) {
 			Intent intent = new Intent(this,WeatherActivity.class);
 			startActivity(intent);
 			finish();
@@ -108,7 +115,7 @@ public class ChooseAreaActivity extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View view, int index,
 					long arg3) {
-				System.out.println(currentLevel);
+				System.out.println("currentLevel==="+currentLevel);
 				if(currentLevel == LEVEL_PROVINCE){
 					selectedProvince = provinceList.get(index);
 					queryCities();
@@ -212,8 +219,8 @@ public class ChooseAreaActivity extends Activity {
 			address = "http://www.weather.com.cn/data/list3/city.xml";
 		}
 		showProgressDialog();
+		
 		HttpUtil.sendHttpRequest(address, new HttpCallbackListener() {
-			
 			@Override
 			public void onFinish(String response) {
 				boolean result = false;
@@ -300,6 +307,10 @@ public class ChooseAreaActivity extends Activity {
 		}else if (currentLevel == LEVEL_CITY) {
 			queryProvinces();
 		}else {
+			if (isFormWeatherActivity) {
+				Intent intent = new Intent(this,WeatherActivity.class);
+				startActivity(intent);
+			}
 			finish();
 		}
 	}
